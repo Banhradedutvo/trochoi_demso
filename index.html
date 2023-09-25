@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang web chơi đếm số</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @keyframes gradient-animation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+    <div class="flex flex-col justify-center items-center min-h-screen">
+        <h1 class="text-4xl font-bold mb-8 text-white">Luật chơi </h1>
+
+        <p class="text-lg text-center mb-12 text-white">
+            Trò chơi "Cuộc Đua Vòng Đua Số" là một trò chơi giữa hai người chơi, trong đó mỗi người <br>
+            có thể đếm một số, hai số hoặc ba số tiếp theo trong dãy số từ 1 đến 30. Mục tiêu của trò chơi là đạt được <br>
+
+            số 30 trước người chơi kia. Người nào đạt được số 30 trước sẽ là người chiến thắng. Các số được đếm phải <br>
+
+            tuân theo thứ tự tăng dần và trò chơi tiếp tục cho đến khi một người đạt được số 30.
+        </p>
+        <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg animate-gradient transform transition-transform duration-500 ease-in-out"
+            onclick="startGame()">Bắt đầu</button>
+    </div>
+
+    <script>
+        function startGame() {
+            // Chuyển hướng sang trang trò chơi
+            window.location.href = "trang-tro-choi.html";
+        }
+    </script>
+</body>
+
+</html>

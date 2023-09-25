@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Trò chơi Đếm số</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+  background: url(image.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+}
+.content {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+    /* CSS để trang trí giao diện */
+    h1 {
+      color: #ff0000;
+      font-family: 'Creepster', cursive; 
+    }
+
+    /* Hiệu ứng pháo hoa */
+    @keyframes fireworks {
+      0% {
+        opacity: 0;
+
+      }
+
+      100% {
+        opacity: 1;
+
+      }
+    }
+
+    .fireworks {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vh;
+      height: 100vh;
+      background-image: url('fireworks.gif');
+      background-size: cover;
+      animation: fireworks 2s ease-in-out;
+    }
+
+.start-btn {
+  background: linear-gradient(to right, #f32170, #ff6b08);
+}
+    .sad-face {
+      font-size: 80px;
+    }
+    .content {
+  position: relative;
+  z-index: 1;
+}
+
+  </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <div class="content">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-8 text-red-600">
+        <span class="animate-pulse text-red-600">Cuộc</span>
+        <span class="animate-bounce text-red-600">Đua</span>
+        <span class="animate-pulse text-red-600">Vòng</span>
+        <span class="animate-bounce text-red-600">Đua</span>
+        <span class="animate-pulse text-red-600">Số</span>
+      </h1>
+      <div class="mb-6">
+  
+      </div>
+      <div class="flex justify-center">
+        <div class="mr-4">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onclick="startGame(30, 'thắng')">Đến 30 là thắng</button>
+        </div>
+        <div>
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            onclick="startGame(30, 'thua')">Đến 30 là thua</button>
+        </div>
+      </div>
+      <div class="game-container mt-8">
+        <div class="game-message bg-pink-300"></div>
+        <div class="button-container mt-4"></div>
+      </div>
+      <div id="fireworks" class="hidden fireworks"></div>
+      <div id="sadFace" class="hidden sad-face">&#128542;</div>
+    </div>
+  </div>
+
+  <script>
+    const startBtnWin = document.querySelector('.btn-start-win'); 
+const startBtnLose = document.querySelector('.btn-start-lose');
+    const scaryMusic = new Audio('scary.mp3');
+    const fadeOutDuration = 5000;
+    var gameMessage = document.querySelector('.game-message');
+    var buttonContainer = document.querySelector('.button-container');
+    var fireworks = document.getElementById('fireworks');
+    var sadFace = document.getElementById('sadFace');
+    var currentPlayer = 1;
+    var currentNumber = 0;
+    var winCondition = 30;
+    var winMessage = ' {player} thắng cuộc!';
+    var loseMessage = ' {player} thua cuộc!';
+    var player1Name = 'Người chơi A';
+    var player2Name = 'Người chơi B';
+
+    function startGame(goal, outcome) {
+      
+ 
+      winCondition = goal;
+      scaryMusic.play();
+      scaryMusic.volume = 0.5; 
+      if (outcome === 'thắng') {
+        winMessage = ' {player} thắng cuộc!';
+        loseMessage = ' {player} thua cuộc!';
+        fireworks.classList.add('hidden');
+        sadFace.classList.add('hidden');
+      } else if (outcome === 'thua') {
+        winMessage = ' {player} thua cuộc!';
+        loseMessage = ' {player} thắng cuộc!';
+        fireworks.classList.add('hidden');
+        sadFace.classList.add('hidden');
+      }
+      currentPlayer = 1;
+      currentNumber = 0;
+      gameMessage.textContent = `Lượt ${player1Name}`;
+      buttonContainer.innerHTML = generateNumberButtons();
+    }
+
+    function playTurn(number) {
+      currentNumber += number;
+
+      if (currentNumber >= winCondition) {
+        var message;
+        if (currentPlayer === 1) {
+          message = winMessage.replace('{player}', player1Name);
+          fireworks.classList.remove('hidden');
+        } else {
+          if (currentNumber === winCondition && currentPlayer === 2) {
+            message = winMessage.replace('{player}', player2Name);
+            fireworks.classList.remove('hidden');
+          } else {
+            message = loseMessage.replace('{player}', player2Name);
+            fireworks.classList.add('hidden');
+          }
+        }
+
+        gameMessage.textContent = message;
+        buttonContainer.innerHTML = '';
+        doSomething();
+      } else {
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
+        gameMessage.textContent = 'Lượt ' + (currentPlayer === 1 ? player1Name : player2Name);
+        buttonContainer.innerHTML = generateNumberButtons();
+      }
+    }
+    function doSomething(){
+      fadeOutSound(scaryMusic);
+    }
+    function fadeOutSound(sound) {
+  const step = sound.volume / (fadeOutDuration / 10); // Bước giảm âm lượng
+  const fadeInterval = 10; // Thời gian (milliseconds) giữa các bước giảm âm lượng
+
+  const fadeOutTimer = setInterval(function() {
+    sound.volume -= step; // Giảm âm lượng
+    if (sound.volume <= 0) {
+      sound.pause(); // Tạm dừng khi âm lượng đạt đến 0
+      clearInterval(fadeOutTimer); // Dừng vòng lặp
+    }
+  }, fadeInterval);
+}
+
+    function generateNumberButtons() {
+      var buttons = '';
+      for (var i = 1; i <= 3; i++) {
+        if (currentNumber + i <= winCondition) {
+          buttons += `<button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="playTurn(${i})">${currentNumber + i}</button> `;
+        }
+      }
+      return buttons;
+    }
+
+  </script>
+</body>
+
+</html>
